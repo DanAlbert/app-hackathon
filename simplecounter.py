@@ -1,6 +1,6 @@
 from google.appengine.ext import db
 import random
-
+ 
 class SimpleCounterShard(db.Model):
   """Shards for the counter"""
   count = db.IntegerProperty(required=True, default=0)    
