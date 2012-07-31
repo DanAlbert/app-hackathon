@@ -2,7 +2,7 @@
 from google.appengine.api import memcache 
 from google.appengine.ext import db
 import random
-
+   
 class GeneralCounterShardConfig(db.Model):
   """Tracks the number of shards for each named counter."""
   name = db.StringProperty(required=True)

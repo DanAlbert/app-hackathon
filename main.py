@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-
-"""
+   
+ """
 Demonstrates:
    * Sharding - Sharding a counter into N random pieces
    * Memcache - Using memcache to cache the total counter value in generalcounter.
