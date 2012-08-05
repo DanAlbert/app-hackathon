@@ -1,6 +1,8 @@
 #!/usr/bin/env python
-   
- """
+
+"""A simple application that demonstrates sharding counters
+   to achieve higher throughput.
+
 Demonstrates:
    * Sharding - Sharding a counter into N random pieces
    * Memcache - Using memcache to cache the total counter value in generalcounter.
@@ -14,15 +16,14 @@ import generalcounter
 import simplecounter
 
 class CounterHandler(webapp.RequestHandler):
-  """
-  Handles displaying the values of the counters
+  """Handles displaying the values of the counters
   and requests to increment either counter.
   """
 
   def get(self):
     template_values = {
       'simpletotal': simplecounter.get_count(),
-      'generaltotal': generalcounter.get_count('Vote')
+      'generaltotal': generalcounter.get_count('FOO')
     }
     template_file = os.path.join(os.path.dirname(__file__), 'counter.html')
     self.response.out.write(template.render(template_file, template_values))
@@ -32,7 +33,7 @@ class CounterHandler(webapp.RequestHandler):
     if counter == 'simple':
       simplecounter.increment()
     else:
-      generalcounter.increment('Vote')
+      generalcounter.increment('FOO')
     self.redirect("/")
 
 
