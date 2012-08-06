@@ -1,8 +1,6 @@
 #!/usr/bin/env python
 
-"""A simple application that demonstrates sharding counters
-   to achieve higher throughput.
-
+"""
 Demonstrates:
    * Sharding - Sharding a counter into N random pieces
    * Memcache - Using memcache to cache the total counter value in generalcounter.
@@ -15,6 +13,15 @@ from google.appengine.ext.webapp import template
 import generalcounter
 import simplecounter
 
+class SiteHandler(webapp.RequestHandler):
+
+  def get(self, q):
+    if q is None:
+      q='about.html'
+    path = os.path.join(os.path.dirname (__file__), q)
+    self.response.headers ['Content-Type'] = 'text/html'
+    self.response.out.write (template.render (path, {}))
+
 class CounterHandler(webapp.RequestHandler):
   """Handles displaying the values of the counters
   and requests to increment either counter.
@@ -23,7 +30,7 @@ class CounterHandler(webapp.RequestHandler):
   def get(self):
     template_values = {
       'simpletotal': simplecounter.get_count(),
-      'generaltotal': generalcounter.get_count('FOO')
+      'generaltotal': generalcounter.get_count('VOTE')
     }
     template_file = os.path.join(os.path.dirname(__file__), 'counter.html')
     self.response.out.write(template.render(template_file, template_values))
@@ -33,7 +40,7 @@ class CounterHandler(webapp.RequestHandler):
     if counter == 'simple':
       simplecounter.increment()
     else:
-      generalcounter.increment('FOO')
+      generalcounter.increment('VOTE')
     self.redirect("/")
 
 
@@ -41,6 +48,7 @@ def main():
   application = webapp.WSGIApplication(
   [  
     ('/', CounterHandler),
+    ('/(.*html)?', SiteHandler),
   ], debug=True)
   wsgiref.handlers.CGIHandler().run(application)
 
