@@ -5,19 +5,20 @@ Demonstrates:
    * Sharding - Sharding a counter into N random pieces
    * Memcache - Using memcache to cache the total counter value in generalcounter.
 """
-
 import os
 import wsgiref.handlers
-from google.appengine.ext import webapp
-from google.appengine.ext.webapp import template
 import generalcounter
 import simplecounter
+
+from google.appengine.ext import webapp
+from google.appengine.ext.webapp import template
 
 class SiteHandler(webapp.RequestHandler):
 
   def get(self, q):
     if q is None:
       q='about.html'
+
     path = os.path.join(os.path.dirname (__file__), q)
     self.response.headers ['Content-Type'] = 'text/html'
     self.response.out.write (template.render (path, {}))
@@ -51,7 +52,6 @@ def main():
     ('/(.*html)?', SiteHandler),
   ], debug=True)
   wsgiref.handlers.CGIHandler().run(application)
-
 
 if __name__ == '__main__':
   main()
