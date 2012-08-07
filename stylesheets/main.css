@@ -53,7 +53,7 @@ a {
 #navBtn ul a {
 	text-decoration: none;
 	padding: 0 10px;
-	color:#000;
+	color:#356EC7;
 	font-weight: bold;
 }
 #navBtn ul a:hover {
@@ -76,13 +76,13 @@ a {
 	-moz-border-radius: 5px;
 }
 .iTtl {
-	color: #000;
+	color: #356EC7;
 	margin: 0 auto;
 	position: relative;
 	font-weight: bold;
 }
 .iDes {
-	color: #333;
+	color: #356EC7;
 	margin: 0 10px 10px 10px;
 	font-size: 90%;
 }
