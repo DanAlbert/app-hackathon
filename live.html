@@ -1,5 +1,6 @@
 <!DOCTYPE HTML>
 <html>
+  <!--<meta name = "viewport" content="width=320;user-scalable=1;" />-->
   <meta name = "viewport" content="width=320;"/>	
   <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
   <title>App Hackathon</title>
@@ -11,58 +12,42 @@
                  App-Hackathon
         </p>
     </header>
-
-
-    <HR color="FF8800">     
+	<HR color="FF8800">     
 	<nav id=navBtn>
 		<ul>
 			<li><a href='/'>Projects</a></li>
-			<li><a href='ideas.html'>Ideas</a></li>
+            <li><a href='ideas.html'>Ideas</a></li>
 			<li><a href='live.html'>Live</a></li>
 			<li><a href='about.html'>About</a></li>
 			<li><a href='faq.html'>FAQ</a></li>
 		</ul>
 	</nav>
-    <HR color="FF8800">     
+	<nav id=navBtn>
+	<HR color="FF8800">     
 
-	<article class =i>
-		<p class= iTtl>Post your idea for an app below!</p>
-		<br/>
-		<p class= iDes>Fill out the form below, but if you want credit you need to login first with your Google account. Click the "Login" button below if you're not already signed in.</p>
-	<!--This is the login button-->
-    <p><a href="{{ url }}">{{ url_linktext }}</a></p>
-
-    <article class = i>
-    <form action="/sign.html" method="post">
-      <div><textarea name="content" rows="3" cols="45"></textarea></div>
-      <div><input type="submit" value="Post Idea"></div>
-    </form>
-    </article>
-
-	{% for greeting in greetings %}
-      <article class = i>
-      <p class = iTtl>
-      {% if greeting.author %}
-        <b>{{ greeting.author.nickname }}</b> wrote:
-      {% else %}
-       An anonymous person wrote:
-      {% endif %}
-      </p>
-      <p class =iDes><blockquote>{{ greeting.content|escape }}</blockquote></p>
-
-      </article>
-    {% endfor %}
-
-
-
+<article class=i>
+	<p class=iTtl>Live feed of ideas from Twitter</p>
 	<p></p>
-<!--
+	<p class=iDes>Tag us with your idea, or include #AppHackathonOSU in your tweet!<p>
+	<p class=iDes>If you like an idea feel free to retweet it! <p>
+</article>
+
+<p></p>
+
 <article class = i>
+<table><tr>
+
+<td>
 <a class="twitter-timeline" href="https://twitter.com/AppHackathonOSU" data-widget-id="243850749581336576">Tweets by @AppHackathonOSU</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</article>
+</td>
+
+<td>
 <a class="twitter-timeline" href="https://twitter.com/search?q=%23AppHackathonOSU" data-widget-id="243845330125328384">Tweets about "#AppHackathonOSU"</a>
 <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
--->
+</td>
+</tr></table>
+</article>
+
   </body>
 </html> 

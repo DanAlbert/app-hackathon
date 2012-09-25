@@ -2,10 +2,25 @@ application: app-hackathon
 version: 1
 runtime: python
 api_version: 1
-  
+threadsafe: true 
+ 
 handlers:
+- url: /favicon\.ico
+  static_files: favicon.ico
+  upload: favicon\.ico
+
+- url: /(.*\.(gif|png|jpg|jpeg))
+  static_files: static/\1
+  upload: static/(.*\.(gif|png|jpg|jpeg))
+
 - url: /stylesheets
   static_dir: stylesheets
+
+- url: /ideas\.html
+  script: guestbook.py
+
+- url: /sign\.html
+  script: guestbook.py
 
 - url: /.*
   script: main.py
