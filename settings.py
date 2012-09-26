@@ -24,14 +24,12 @@ if (os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or
         }
     }
 else:
-    # Running in a dev environment, so use MySQL
+    # Running in a dev environment, so use sqlite
+    # NOTE: MUST BE RUN IN DJANGO DEV SERVER
     DATABASES = {
         'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'USER': 'hackathon',
-            'PASSWORD': 'foobar',
-            'HOST': 'localhost',
-            'NAME': 'hackathon',
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': 'sqlite3.db',
         }
     }
 
