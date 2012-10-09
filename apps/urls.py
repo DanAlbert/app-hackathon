@@ -1,8 +1,5 @@
 from django.conf.urls.defaults import patterns, url
 
-from django.contrib import admin
-admin.autodiscover()
-
 urlpatterns = patterns('apps.views',
     url(r'^$', 'index'),
     url(r'^about$', 'about'),

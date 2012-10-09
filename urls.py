@@ -6,7 +6,7 @@ admin.autodiscover()
 urlpatterns = patterns('',
     url(r'^$', 'apps.views.index'),  # default page
     
-    url(r'^apps/', include('hackathon.apps.urls')),  # include our app's URLs
+    url(r'^apps/', include('apps.urls')),  # include our app's URLs
     
     # enable admin
     url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
