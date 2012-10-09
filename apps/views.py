@@ -25,9 +25,15 @@ def about(request):
 
 def ideas(request):
     if request.method == 'GET':
-        return render_to_response('apps/ideas.html',
-                                  context_instance=RequestContext(request))
+        idea_list = Idea.objects.all()
+        return render_to_response(
+                'apps/ideas.html',
+                {'ideas': idea_list, 'login_url': '', 'login_text': 'Login'},
+                context_instance=RequestContext(request))
     elif request.method == 'POST':
+        idea = Idea()
+        idea.description = request.POST['content']
+        idea.save()
         return HttpResponseRedirect(reverse('apps.views.ideas'))
     else:
         raise Http404

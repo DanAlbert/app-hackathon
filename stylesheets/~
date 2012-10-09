@@ -2,18 +2,17 @@ html, body {
   font-family: Verdana, Helvetica, sans-serif;
   background-color: #FFF;
   /*color:#356EC7;*/
-  color:#404040;
+  color:#COCOCO
   text-align:left;
   margin:0;
   padding:0;
   height:100%;
 }
-
 #header{
 	width: 100%;
 	height: 25px;
 	/*border-top: 5px solid #999;*/
-    background-color:#404040;
+  	background-color:#356EC7;
 	position:fixed;
   	text-align:center;
 	color: white;
@@ -36,7 +35,7 @@ a {
 }
 .pTtl {
 	display: block;
-    background-color:#404040;
+  	background-color:#356EC7;
 	margin-left: 15px;
 	padding: 10px;
 	color: #fff;
@@ -55,11 +54,11 @@ a {
 #navBtn ul a {
 	text-decoration: none;
 	padding: 0 10px;
-	color:#FF8800;
+	color:#356EC7;
 	font-weight: bold;
 }
 #navBtn ul a:hover {
-	background-color:#FF8800;
+	background-color:#356EC7;
 	color:#fff;
 	-webkit-border-radius: 5px;
 	-moz-border-radius: 5px;
@@ -84,12 +83,12 @@ a {
 	font-weight: bold;
 }
 .iDes {
-	color: #404040;
+	color: #356EC7;
 	margin: 0 10px 10px 10px;
 	font-size: 90%;
 }
 .iLnk {
-	color: #FF8800;
+	color: #0088CC;
 	margin-left: 15px;
 	font-size: 85%;
 	font-style: italic;
