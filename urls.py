@@ -1,10 +1,11 @@
 from django.conf.urls.defaults import patterns, include, url
+from django.views.generic.simple import redirect_to
 
 from django.contrib import admin
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 'apps.views.index'),  # default page
+    url(r'^$', redirect_to, {'url': 'apps/'}),  # default page
     
     url(r'^apps/', include('apps.urls')),  # include our app's URLs
     

@@ -1,66 +1,82 @@
 <!DOCTYPE HTML>
+<!DOCTYPE html>
 <html>
-  <meta name = "viewport" content="width=320;"/>	
-  <link type="text/css" rel="stylesheet" href="/static/apps/main.css" />
-  <title>App Hackathon</title>
-  </head>
-  <body>
-    <header>
-        <p class=pTtl>
-           <img src="/static/greyback.png" width="35" height="28" />
-                 App-Hackathon
-        </p>
-    </header>
+<head>
+	<meta name = "viewport" content="width=320;"/>	
+	<link type="text/css" rel="stylesheet" href="/static/main.css" />
+	<title>App Hackathon</title>
+</head>
+<body>
+	<header>
+		<p class=pTtl>
+			<img src="/static/greyback.png" width="35" height="28" />
+			App-Hackathon
+	</p>
+	</header>
 
-
-    <HR color="FF8800">     
+    <hr color="FF8800">     
 	<nav id=navBtn>
 		<ul>
-			<li><a href='/'>Projects</a></li>
-			<li><a href='ideas.html'>Ideas</a></li>
-			<li><a href='live.html'>Live</a></li>
-			<li><a href='about.html'>About</a></li>
-			<li><a href='faq.html'>FAQ</a></li>
+			<li><a href='index'>Projects</a></li>
+			<li><a href='ideas'>Ideas</a></li>
+			<li><a href='live'>Live</a></li>
+			<li><a href='about'>About</a></li>
+			<li><a href='faq'>FAQ</a></li>
 		</ul>
 	</nav>
-    <HR color="FF8800">     
+    <hr color="FF8800">     
 
-	<article class =i>
-		<p class= iTtl>Post your idea for an app below!</p>
+	<article class="i">
+		<p class="iTtl">Post your idea for an app below!</p>
 		<br/>
-		<p class= iDes>Fill out the form below, but if you want credit you need to login first with your Google account. Click the "Login" button below if you're not already signed in.</p>
-	<!--This is the login button-->
-    <p><a href="{{ login_url }}">{{ login_text }}</a></p>
+		<p class="iDes">
+			Fill out the form below, but if you want credit you need to login
+			first with your Google account. Click the "Login" button below if
+			you're not already signed in.
+		</p>
+	
+		<!-- This is the login button -->
+	    <p><a href="{{ login_url }}">{{ login_text }}</a></p>
 
-    <article class = i>
-    <form action="ideas" method="post">
-      <div><textarea name="content" rows="3" cols="45"></textarea></div>
-      <div><input type="submit" value="Post Idea"></div>
-	{% csrf_token %}
-    </form>
-    </article>
+		<article class="i">
+			<form action="ideas" method="post">
+				{% csrf_token %}
+				<div>
+					<label for="idea-name">Title:</label>
+					<input id="idea-name" type="text" name="name" />
+				</div>
+				<div>
+					<label for="idea-description">Description:</label>
+					<textarea id="idea-description" name="description"
+							rows="3" cols="45">
+					</textarea>
+				</div>
+				<div><input type="submit" value="Post Idea"></div>
+			</form>
+		</article>
 
-    {% for idea in ideas %}
-        <article class = i>
-            <p class = iTtl>
-       An anonymous person wrote:
-      {% endif %}
-      </p>
-      <p class =iDes><blockquote>{{ idea.description|escape }}</blockquote></p>
-
-      </article>
-    {% endfor %}
-
-
-
-	<p></p>
-<!--
-<article class = i>
-<a class="twitter-timeline" href="https://twitter.com/AppHackathonOSU" data-widget-id="243850749581336576">Tweets by @AppHackathonOSU</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-</article>
-<a class="twitter-timeline" href="https://twitter.com/search?q=%23AppHackathonOSU" data-widget-id="243845330125328384">Tweets about "#AppHackathonOSU"</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
--->
-  </body>
+		{% for idea in ideas %}
+		<article class="i">
+			<p class="iTtl">
+				{% if idea.author %}
+				{{ idea.author }}
+				{% else %}
+				An anonymous person
+				{% endif %}
+				wrote:
+			</p>
+			{% if admin %}
+			<form action="{{ idea.id }}/approve/" method="post">
+				{% csrf_token %}
+				<input type="submit" value="Approve" />
+			</form>
+			{% endif %}
+			<p class="iTtl">{{ idea.name }}</p>
+			<p class="iDes">
+				<blockquote>{{ idea.description|escape }}</blockquote>
+			</p>
+		</article>
+		{% endfor %}
+	</article>
+</body>
 </html> 

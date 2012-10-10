@@ -2,6 +2,8 @@
 
 import os
 
+import apps.env
+
 ROOT_PATH = os.path.dirname(__file__)
 
 DEBUG = True
@@ -13,19 +15,31 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
-if (os.getenv('SERVER_SOFTWARE', '').startswith('Google App Engine') or
-    os.getenv('SETTINGS_MODE') == 'prod'):
-    # Running on production App Engine, so use a Google Cloud SQL database.
-    DATABASES = {
-        'default': {
-            'ENGINE': 'google.appengine.ext.django.backends.rdbms', # Add 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
-            'INSTANCE': 'hackathon-project:instance1',
-            'NAME': 'db', # Or path to database file if using sqlite3.
+if apps.env.is_gae():
+    if apps.env.is_gae_dev():
+        # For some reason, the GAE dev server can't use sqlite, so we have to
+        # use MySQL. There is a --use_ssqlite flag for the dev server, but it
+        # wasn't working for me.
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.mysql',
+                'USER': 'user',
+                'PASSWORD': 'pass',
+                'HOST': 'localhost',
+                'NAME': 'my_db',
+            }
         }
-    }
+    else:
+        # Running on production App Engine, so use a Google Cloud SQL database.
+        DATABASES = {
+            'default': {
+                'ENGINE': 'google.appengine.ext.django.backends.rdbms',
+                'INSTANCE': 'hackathon-project:instance1',
+                'NAME': 'db',
+            }
+        }
 else:
-    # Running in a dev environment, so use sqlite
-    # NOTE: MUST BE RUN IN DJANGO DEV SERVER
+    # Running in Django dev environment, so use sqlite
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
