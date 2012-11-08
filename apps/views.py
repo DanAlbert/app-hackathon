@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, Http404, HttpResponse
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template import RequestContext
 from django.core.urlresolvers import reverse
@@ -26,20 +26,26 @@ def index(request):
                           {'votes': vote_list})
 
 def approve(request, idea_id):
-    idea = get_object_or_404(Idea, pk=idea_id)
-    
-    proj = Project()
-    proj.name = idea.name
-    proj.description = idea.description
-    proj.save()
-    
-    vote = Vote()
-    vote.project = proj
-    vote.save()
-    
-    idea.delete()
-    
-    return HttpResponseRedirect(reverse('apps.views.index'))
+    if auth.user_is_admin():
+        idea = get_object_or_404(Idea, pk=idea_id)
+        
+        proj = Project()
+        proj.name = idea.name
+        proj.description = idea.description
+        proj.save()
+        
+        vote = Vote()
+        vote.project = proj
+        vote.save()
+        
+        idea.delete()
+        
+        return HttpResponseRedirect(reverse('apps.views.index'))
+    else: 
+        # TODO(Dan): generalize this and actually make it log these incidents
+        return HttpResponse('Only administrators are authorized to perform '
+                            'this operation. This incident has been logged.',
+                            status=401)
 
 def vote(request, vote_id):
     v = get_object_or_404(Vote, pk=vote_id)

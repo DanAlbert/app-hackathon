@@ -8,6 +8,6 @@ urlpatterns = patterns('apps.views',
     url(r'^live$', 'live'),
     url(r'^ideas$', 'ideas'),
     
-    url(r'^(?P<idea_id>\d+)/approve/$', 'approve'),
-    url(r'^(?P<vote_id>\d+)/vote/$', 'vote'),
+    url(r'^approve/(?P<idea_id>\d+)/$', 'approve'),
+    url(r'^vote/(?P<vote_id>\d+)/$', 'vote'),
 )
