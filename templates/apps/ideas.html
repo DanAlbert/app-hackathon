@@ -1,8 +1,6 @@
 <!DOCTYPE HTML>
-<!DOCTYPE html>
 <html>
 <head>
-	<meta name = "viewport" content="width=320;"/>	
 	<link type="text/css" rel="stylesheet" href="/static/main.css" />
 	<title>App Hackathon</title>
 </head>
@@ -10,10 +8,9 @@
 	<header>
 		<p class=pTtl>
 			<img src="/static/greyback.png" width="35" height="28" />
-			App-Hackathon
-	</p>
+			App-Hackathon <a href="{{ login_url }}" style="float:right">{{ login_text }}</a>
+		</p>
 	</header>
-
     <hr color="FF8800">     
 	<nav id=navBtn>
 		<ul>
@@ -25,58 +22,64 @@
 		</ul>
 	</nav>
     <hr color="FF8800">     
-
+<!--
 	<article class="i">
-		<p class="iTtl">Post your idea for an app below!</p>
-		<br/>
-		<p class="iDes">
-			Fill out the form below, but if you want credit you need to login
-			first with your Google account. Click the "Login" button below if
-			you're not already signed in.
-		</p>
-	
-		<!-- This is the login button -->
-	    <p><a href="{{ login_url }}">{{ login_text }}</a></p>
-
-		<article class="i">
-			<form action="ideas" method="post">
-				{% csrf_token %}
-				<div>
-					<label for="idea-name">Title:</label>
-					<input id="idea-name" type="text" name="name" />
-				</div>
-				<div>
-					<label for="idea-description">Description:</label>
-					<textarea id="idea-description" name="description"
-							rows="3" cols="45">
-					</textarea>
-				</div>
-				<div><input type="submit" value="Post Idea"></div>
-			</form>
+		<p>OS: {{ os }}</p>
+		<p>Browser: {{ browser }}</p>
+		<p>Agent: {{ agent }}</p>
+	</article>
+-->
+		<article class="i list-box">
+			<p class="iTtl">Post your idea for an app below!</p>
+			<br/>
+			<p class="iDes">
+				Fill out the form below, but if you want credit you need to login
+				first with your Google account. Click the "Login" button if
+				you're not already signed in (upper right).
+			</p>
+			<article class="i">
+				<form action="ideas" method="post">
+					{% csrf_token %}
+					<div>
+						<p class ="iTtl">
+							<label for="idea-name">Title:</label>
+						</p>
+						<input id="idea-name" type="text" name="name" />
+					</div>
+					<div>
+						<p class ="iTtl">
+							<label for="idea-description">Description:</label>
+						</p>
+						<textarea id="idea-description" name="description"
+								rows="3" cols="25">
+						</textarea>
+					</div>
+					<div><input type="submit" value="Post Idea"></div>
+				</form>
+			</article>
 		</article>
 
 		{% for idea in ideas %}
-		<article class="i">
-			<p class="iTtl">
-				{% if idea.author %}
-				{{ idea.author }}
-				{% else %}
-				An anonymous person
+			<article class="i list-box">
+				<p class="iTtl">
+					{% if idea.author %}
+					{{ idea.author }}
+					{% else %}
+					An anonymous person
+					{% endif %}
+					wrote:
+				</p>
+				{% if admin %}
+				<form action="{{ idea.id }}/approve/" method="post">
+					{% csrf_token %}
+					<input type="submit" value="Approve" />
+				</form>
 				{% endif %}
-				wrote:
-			</p>
-			{% if admin %}
-			<form action="approve/{{ idea.id }}/" method="post">
-				{% csrf_token %}
-				<input type="submit" value="Approve" />
-			</form>
-			{% endif %}
-			<p class="iTtl">{{ idea.name }}</p>
-			<p class="iDes">
-				<blockquote>{{ idea.description|escape }}</blockquote>
-			</p>
-		</article>
+				<p class="iTtl">{{ idea.name }}</p>
+				<p class="iDes">
+					<blockquote>{{ idea.description|escape }}</blockquote>
+				</p>
+			</article>
 		{% endfor %}
-	</article>
 </body>
 </html> 
