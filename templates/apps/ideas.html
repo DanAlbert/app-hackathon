@@ -68,6 +68,7 @@
 		first with your Google account. Click the "Login" button if
 		you're not already signed in (upper right).
 		</p>
+
 		<article class="i">
 		<form action="ideas" method="post">
 			{% csrf_token %}
@@ -75,7 +76,7 @@
 			<p class ="iTtl">
 				<label for="idea-name">Title:</label>
 			</p>
-			<input id="idea-name" width="100%" type="text" name="name"/>
+			<input id="idea-name" type="text" name="name"/>
 			</div>
 			<div>
 			<p class ="iTtl">
@@ -108,7 +109,8 @@
 		{% endif %}
 		<p class="iTtl">{{ idea.name }}</p>
 		<p class="iDes">
-			<blockquote>{{ idea.description|escape }}</blockquote>
+			<!--<blockquote>{{ idea.description|escape }}</blockquote> -->
+			{{ idea.description|escape }}
 		</p>
 		</article>
 	{% endfor %}
