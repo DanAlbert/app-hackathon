@@ -1,10 +1,33 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta name="viewport" content="width=320;" />	
-	<link type="text/css" rel="stylesheet" href="/static/main.css" />
 	<title>App Hackathon</title>
 </head>
+<script>
+    var OSName;
+    if (navigator.appVersion.indexOf("Win")!=-1)
+         OSName="Windows";
+    if (navigator.appVersion.indexOf("Mac")!=-1)
+         OSName="MacOS";
+    if (navigator.appVersion.indexOf("X11")!=-1) 
+        OSName="UNIX";
+    if (navigator.appVersion.indexOf("Linux")!=-1) 
+        OSName="Linux";
+    if (navigator.appVersion.indexOf("iPhone")!=-1)
+        OSName="iPhone";
+    if (navigator.appVersion.indexOf("iPod")!=-1)
+        OSName="iPod";
+    if (navigator.appVersion.indexOf("Android Mobile")!=-1)
+        OSName="Android Mobile";
+
+    if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
+        document.write('<link id="css" rel="stylesheet" type="text/css" href="/static/mobile.css" >');
+    }
+    else {
+        document.write('<link id="css" rel="stylesheet" type="text/css" href="/static/main.css" >');
+    }
+</script>
+
 <body>
 	<header>
 		<p class="pTtl">
