@@ -102,9 +102,13 @@
 			wrote:
 		</p>
 		{% if admin %}
-		<form action="{{ idea.id }}/approve/" method="post">
+		<form action="approve/{{ idea.id }}/" method="post">
 			{% csrf_token %}
 			<input type="submit" value="Approve" />
+		</form>
+		<form action="idea/delete/{{ idea.id }}/" method="post">
+			{% csrf_token %}
+			<input type="submit" value="Delete" />
 		</form>
 		{% endif %}
 		<p class="iTtl">{{ idea.name }}</p>

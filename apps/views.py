@@ -23,7 +23,10 @@ def index(request):
     vote_list = Vote.objects.all().order_by('-count')
     return basic_response('apps/index.html',
                           request,
-                          {'votes': vote_list})
+                          {
+                              'votes': vote_list,
+                              'admin': auth.user_is_admin(),
+                          })
 
 def approve(request, idea_id):
     if auth.user_is_admin():
@@ -41,7 +44,31 @@ def approve(request, idea_id):
         idea.delete()
         
         return HttpResponseRedirect(reverse('apps.views.index'))
-    else: 
+    else:
+        # TODO(Dan): generalize this and actually make it log these incidents
+        return HttpResponse('Only administrators are authorized to perform '
+                            'this operation. This incident has been logged.',
+                            status=401)
+
+def delete_idea(request, idea_id):
+    if auth.user_is_admin():
+        idea = get_object_or_404(Idea, pk=idea_id)
+        idea.delete()
+        
+        return HttpResponseRedirect(reverse('apps.views.ideas'))
+    else:
+        # TODO(Dan): generalize this and actually make it log these incidents
+        return HttpResponse('Only administrators are authorized to perform '
+                            'this operation. This incident has been logged.',
+                            status=401)
+
+def delete_project(request, proj_id):
+    if auth.user_is_admin():
+        proj = get_object_or_404(Project, pk=proj_id)
+        proj.delete()
+        
+        return HttpResponseRedirect(reverse('apps.views.index'))
+    else:
         # TODO(Dan): generalize this and actually make it log these incidents
         return HttpResponse('Only administrators are authorized to perform '
                             'this operation. This incident has been logged.',
