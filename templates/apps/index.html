@@ -35,6 +35,12 @@
         <article class="i">
 			<p class="iTtl">{{ vote.project.name }}</p>
 			<p class="iDes">{{ vote.project.description }}</p>
+			{% if admin %}
+			<form action="project/delete/{{ vote.project.id }}/" method="post">
+				{% csrf_token %}
+				<input type="submit" value="Delete" />
+			</form>
+			{% endif %}
 			<form action="/apps/vote/{{ vote.id }}/" method="post">
 				{% csrf_token %}
 				<p>
