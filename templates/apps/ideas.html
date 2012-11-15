@@ -24,11 +24,11 @@
 	}
 	var OSName = findOS();
 	if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
-		document.write('<link id="css" rel="stylesheet" type="text/css" href="/static/mobile.css" >');
+		document.write('<link rel="stylesheet" type="text/css" href="/static/mobile.css" >');
 		document.write('<meta name="viewport" content="width=320;" />');
 	}
 	else {
-		document.write('<link id="css" rel="stylesheet" type="text/css" href="/static/main.css" >');
+		document.write('<link rel="stylesheet" type="text/css" href="/static/main.css" >');
 	}
 </script>
 <body >
@@ -41,10 +41,10 @@
 			var OSName = findOS();
 		    if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
 				document.write('</p></header>');
-//				document.write('<a href="{{ login_url }}" style="float:right"; color:"#ff8800";>{{ login_text }}</a>');
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
 		    }
 		    else {
-				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";>{{ login_text }}</a>');
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
 				document.write('</p></header>');
 		    }
 		</script>
