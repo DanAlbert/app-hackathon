@@ -56,6 +56,9 @@
 		
 		{% for vote in votes %}
         <article class="i">
+			{% if vote.project.author %}
+			<p class="iTtl">{{ vote.project.author }} wrote</p>
+			{% endif %}
 			<p class="iTtl">{{ vote.project.name }}</p>
 			<p class="iDes">{{ vote.project.description }}</p>
 			{% if admin %}

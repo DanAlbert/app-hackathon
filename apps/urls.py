@@ -1,8 +1,9 @@
 from django.conf.urls.defaults import patterns, url
 
 urlpatterns = patterns('apps.views',
-    url(r'^$', 'index'),
-    url(r'^index$', 'index'),
+    url(r'^$', 'projects'),
+    url(r'^index$', 'projects'),
+    url(r'^projects$', 'projects'),
     url(r'^about$', 'about'),
     url(r'^faq$', 'faq'),
     url(r'^live$', 'live'),

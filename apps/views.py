@@ -19,9 +19,9 @@ def basic_response(template, request, extra_data={}):
                               data,
                               context_instance=RequestContext(request))
     
-def index(request):
+def projects(request):
     vote_list = Vote.objects.all().order_by('-count')
-    return basic_response('apps/index.html',
+    return basic_response('apps/projects.html',
                           request,
                           {
                               'votes': vote_list,
@@ -35,6 +35,7 @@ def approve(request, idea_id):
         proj = Project()
         proj.name = idea.name
         proj.description = idea.description
+        proj.author = idea.author
         proj.save()
         
         vote = Vote()
@@ -43,7 +44,7 @@ def approve(request, idea_id):
         
         idea.delete()
         
-        return HttpResponseRedirect(reverse('apps.views.index'))
+        return HttpResponseRedirect(reverse('apps.views.projects'))
     else:
         # TODO(Dan): generalize this and actually make it log these incidents
         return HttpResponse('Only administrators are authorized to perform '
@@ -67,7 +68,7 @@ def delete_project(request, proj_id):
         proj = get_object_or_404(Project, pk=proj_id)
         proj.delete()
         
-        return HttpResponseRedirect(reverse('apps.views.index'))
+        return HttpResponseRedirect(reverse('apps.views.projects'))
     else:
         # TODO(Dan): generalize this and actually make it log these incidents
         return HttpResponse('Only administrators are authorized to perform '
@@ -78,7 +79,7 @@ def vote(request, vote_id):
     v = get_object_or_404(Vote, pk=vote_id)
     v.increment()
     v.save()
-    return HttpResponseRedirect(reverse('apps.views.index'))
+    return HttpResponseRedirect(reverse('apps.views.projects'))
 
 def rules(request):
     return basic_response('apps/rules.html', request)

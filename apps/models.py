@@ -10,12 +10,13 @@ class Idea(models.Model):
 
 class Project(models.Model):
     name = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, null=True)  # null means anonymous
     description = models.TextField()
 
 
 class Vote(models.Model):
     project = models.ForeignKey(Project)
     count = models.IntegerField(default=0)
-    
+
     def increment(self):
         self.count += 1
