@@ -60,7 +60,8 @@
 	</nav>
     <hr color="FF8800">     
 
-	<article class="i big-list-box">
+	<article class="i">
+	<!--<article class="i big-list-box"> -->
 		<p class="iTtl">Post your idea for an app below!</p>
 		<br/>
 		<p class="iDes">
@@ -83,16 +84,17 @@
 				<label for="idea-description">Description:</label>
 			</p>
 			<textarea id="idea-description" name="description"
-				rows="3" cols="40">
+				rows="3" cols="25">
 			</textarea>
 			</div>
 			<div><input type="submit" value="Post Idea"></div>
 		</form>
 		</article>
-	</article>
 
+	</article>
 	{% for idea in ideas %}
-		<article class="i list-box">
+		<article class="i">
+		<!--article class=" i list-box"> -->
 		<p class="iTtl">
 			{% if idea.author %}
 			{{ idea.author }}
@@ -112,9 +114,10 @@
 		</form>
 		{% endif %}
 		<p class="iTtl">{{ idea.name }}</p>
+		<br/>
 		<p class="iDes">
+			{{ idea.description|escape }}
 			<!--<blockquote>{{ idea.description|escape }}</blockquote> -->
-			<p>{{ idea.description|escape }}</p>
 		</p>
 		</article>
 	{% endfor %}

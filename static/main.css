@@ -10,15 +10,14 @@ html, body {
 }
 .big-list-box{
 	float: left;
-	width: 400px;
+	width: 355px;
 	height: 330px;
 }
 .list-box {
 	float: left;
-	width: 400px;
-	height: 135px;
-	overflow:scroll;
-	/*height: auto;*/
+	width: 355px;
+	height: 330px;
+	/*overflow:scroll;*/
 }
 #header{
 	width: 100%;
