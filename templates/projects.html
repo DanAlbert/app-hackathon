@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>App Hackathon!</title>
+</head>
+<script>
+	function findOS(){
+		var OSName;
+		if (navigator.appVersion.indexOf("Win")!=-1)
+			 OSName="Windows";
+		if (navigator.appVersion.indexOf("Mac")!=-1)
+			 OSName="MacOS";
+		if (navigator.appVersion.indexOf("X11")!=-1) 
+			OSName="UNIX";
+		if (navigator.appVersion.indexOf("Linux")!=-1) 
+			OSName="Linux";
+		if (navigator.appVersion.indexOf("iPhone")!=-1)
+			OSName="iPhone";
+		if (navigator.appVersion.indexOf("iPod")!=-1)
+			OSName="iPod";
+		if (navigator.appVersion.indexOf("Android Mobile")!=-1)
+			OSName="Android Mobile";
+		return OSName;
+	}
+	var OSName = findOS();
+	if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
+		document.write('<link rel="stylesheet" type="text/css" href="/static/mobile.css" >');
+		document.write('<meta name="viewport" content="width=320;" />');
+	}
+	else {
+		document.write('<link rel="stylesheet" type="text/css" href="/static/main.css" >');
+	}
+</script>
+
+<body>
+	<header>
+		<p class=pTtl>
+		<img src="/static/greyback.png" width="35px" height="28px" />
+		App-Hackathon
+		
+		<script>
+			var OSName = findOS();
+		    if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
+				document.write('</p></header>');
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
+		    }
+		    else {
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
+				document.write('</p></header>');
+		    }
+		</script>
+	<hr color="FF8800">		
+	<nav id="navBtn">
+		<ul>
+			<li><a href='projects'>Projects</a></li>
+            <li><a href='ideas'>Ideas</a></li>
+			<li><a href='live'>Live</a></li>
+			<li><a href='about'>About</a></li>
+			<li><a href='faq'>FAQ</a></li>
+		</ul>
+	</nav>
+	<hr color="FF8800">		
+	<article class="i">
+		<p class="iTtl">Accepted Projects:</p>
+		<p></p>
+		<p class="iDes">
+			These are the ideas that have been screened and accepted by the
+			moderators so far. These will update every day, so keep voting!
+		</p>
+		
+		{% for project in projects %}
+        <article class="i">
+			{% if project.author %}
+			<p class="iTtl">{{ project.author.nickname }} wrote</p>
+			{% endif %}
+			<p class="iTtl">{{ project.name }}</p>
+			<p class="iDes">{{ project.description }}</p>
+			{% if admin %}
+			<form action="projects/delete/{{ project.key }}" method="post">
+				{% csrf_token %}
+				<input type="submit" value="Delete" />
+			</form>
+			{% endif %}
+			<form action="projects/vote/{{ project.key }}" method="post">
+				{% csrf_token %}
+				<p>
+					<input type="submit" style="height:40px; width:120px;"
+						value="Vote" />
+				</p>
+			</form>
+			<p>Total:{{ project.votes.count }}</p> 
+		</article>
+		{% endfor %}
+	</article>
+</body>
+</html> 

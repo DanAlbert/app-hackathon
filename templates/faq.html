@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>App Hackathon</title>
+</head>
+<script>
+	function findOS(){
+		var OSName;
+		if (navigator.appVersion.indexOf("Win")!=-1)
+			 OSName="Windows";
+		if (navigator.appVersion.indexOf("Mac")!=-1)
+			 OSName="MacOS";
+		if (navigator.appVersion.indexOf("X11")!=-1) 
+			OSName="UNIX";
+		if (navigator.appVersion.indexOf("Linux")!=-1) 
+			OSName="Linux";
+		if (navigator.appVersion.indexOf("iPhone")!=-1)
+			OSName="iPhone";
+		if (navigator.appVersion.indexOf("iPod")!=-1)
+			OSName="iPod";
+		if (navigator.appVersion.indexOf("Android Mobile")!=-1)
+			OSName="Android Mobile";
+		return OSName;
+	}
+	var OSName = findOS();
+	if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
+		document.write('<link rel="stylesheet" type="text/css" href="/static/mobile.css" >');
+		document.write('<meta name="viewport" content="width=320;" />');
+	}
+	else {
+		document.write('<link rel="stylesheet" type="text/css" href="/static/main.css" >');
+	}
+</script>
+<body>
+	<header>
+		<p class=pTtl>
+		<img src="/static/greyback.png" width="35px" height="28px" />
+		App-Hackathon
+		
+		<script>
+			var OSName = findOS();
+		    if ( OSName == 'iPhone' || OSName =='iPod' || OSName =='Android Mobile') {
+				document.write('</p></header>');
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
+		    }
+		    else {
+				document.write('<a href="{{ login_url }}" style="float:right; color:"#ffffff";><font color="FFFFFF">{{ login_text }}</font></a>');
+				document.write('</p></header>');
+		    }
+		</script>
+
+
+    <HR color="FF8800">     
+	<nav id=navBtn>
+		<ul>
+			<li><a href='projects'>Projects</a></li>
+            <li><a href='ideas'>Ideas</a></li>
+			<li><a href='live'>Live</a></li>
+			<li><a href='about'>About</a></li>
+			<li><a href='faq'>FAQ</a></li>
+		</ul>
+	</nav>
+    <HR color="FF8800">     
+
+<article class=i>
+    <p class=iTtl>What do I do here?</p>
+	<p></p>
+    <p class=iDes>You should think of an app idea.</p>
+    <p class=iDes>Something you want on your desktop, phone, tablet, or anything else.</p>
+    <p class=iDes>When you have that perfect idea and want to talk to a developer you should submit it on the ideas page, or tweet your idea with @AppHackathonOSU in the tweet.</p>
+    <p class=iDes>We will review it and starting in Winter Term we will be having teams making apps. If yours wins the vote at the end of fall term you could be in the running to win one of many prizes! So get thinking and share this page with your friends.</p>
+</article>
+
+<article class=i>
+    <p class=iTtl>Updates</p>
+	<p></p>
+    <p class=iDes>We will update this page as the competition progresses. We will be posting teams up here when the projects are chosen.</p>
+    <p class=iDes>When an idea goes up on the "Ideas" page, the moderators will approve it for final submission and if it meets the requirments (See Rules below), then we will add it to the "Projects" page and you can vote for the project you think is the best!</p>
+	
+</article>
+
+<article class=i>
+    <p class=iTtl>Rules:</p>
+	<p></p>
+    <p class=iDes>1. Keep your app family friendly.</p>
+    <p class=iDes>2. Cannot have any pornographic material.</p>
+    <p class=iDes>3. Do not copy any copyrighted material. </p>
+    <p class=iDes>4. Do not sabotage any other team's code. </p>
+    <p class=iDes>5. The apps must be demonstrable (Make something that people can witness). Showing that you made a Turing complete circuit board is not demonstrable. Showing an app that shoots birds through the air is demonstrable. </p>
+</article>
+	
+  </body>
+</html> 
