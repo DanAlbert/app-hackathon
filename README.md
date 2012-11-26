@@ -1,51 +1,39 @@
 The Development Environment
 ===========================
 
-For now, the best way to run the development environment is through the Django
-dev server. To run this, first make sure all the Django 1.3 tools are installed
-an in your `PATH`. Then, from the root of the project directory, run
+The project is now purely Google App Engine, which greatly simplifies the
+development, staging and deployment of the website.
 
-    $ python manage.py syncdb
+Start the development server using
 
-This will initialize the sqlite3 database as needed for you to run the site. To
-start the server, run
+    $ dev_appserver.py app-hackathon/
 
-    $ python manage.py runserver
+Then navigate to [http://127.0.0.1:8080/](http://127.0.0.1:8080/) and begin
+testing the site.
 
-Then navigate to [http://127.0.0.1:8000/](http://127.0.0.1:8000/) and begin
-testing the site. If you make any changes to the models and need to update the
-existing database, use
+Note: this needs to be run from the directory above the project.
 
-    $ python manage.py flush
+Staging
+=======
 
-__Be very careful__ not to run this command against the production database, as
-it will clear the entire database. When I get the chance, I'll set up migrations
-so we don't need this in the future.
+Once you have tested your changes locally, you can push them to the staging
+server for a final test (or to share with other develpers) before pushing them
+to the production site. To do this, change the application name in `app.yaml`
+from app-hackathon to dev-app-hackathon. Now upload the application to Google
+App Engine as usual.
 
-Testing with Google App Engine
-==============================
+Deployment
+==========
 
-Once you have most of your changes implemented, test the site in Google App
-Engine. You'll need to set up a local MySQL instance (or figure out why
-`dev_appserver.py --use_sqlite` doesn't work) and configure it in `settings.py`.
-You'll need to run `syncdb` as you did for Django. Once you've done this, start
-the dev server using
+Final deployment should be simple. Ensure that the application name in
+`app.yaml` is app-hackathon, and run
 
-    $ dev_appserver.py hackathon
+    $ appcfg.py update app-hackathon/
 
 Note: this needs to be run from the directory above the project.
 
 Guidelines and Style
 ====================
-* Make sure your dev environment (i.e. Django) works before you write any new
-  code.
-* Use Django utilities wherever possible. If you need any GAE utilities, make
-  sure you implement it in such a way that the Django dev server doesn't blow up
-  when you use it.
-    * One way you might do this is to appropriately stub some functions. Take a
-	  look at the code in `apps/auth.py` for an example of one way this could be
-	  done.
-    * Use `apps/env.py` to determine what environment you're operating in.
 * Make sure your HTML is valid and well indented. It is really difficult to
   figure out what the tag hierarchy is when the HTML is malformed, poorly
   indented, and written by someone else.
@@ -55,10 +43,8 @@ Guidelines and Style
 * Avoid using memcaches. Premature optimization only makes development more
   difficult. If we see some parts of the site that would benefit from their use,
   file a bug and I'll take care of it.
-* Let me (Dan) know before you make a database change. Each time I've had to
-  backport changes from the mainline into Django it has taken me several hours
-  to hack, prune and mash the GAE interface into Django.
+* Let me (Dan) know before you make a database change. It's usually simpler to
+  write it myself than it is to fix a bad implementation.
 * Make sure your resources are in the right place. HTML templates go in
-  `/templates/apps`. Stylesheets, images and scripts go in `/static` (or
-  `/static/apps`, if you deem it appropriate).
+  `/templates`. Stylesheets, images and scripts go in `/static`.
 * [Python style guide](http://www.python.org/dev/peps/pep-0008/)
