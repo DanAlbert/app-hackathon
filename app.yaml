@@ -2,19 +2,19 @@ application: app-hackathon
 version: 1
 runtime: python27
 api_version: 1
-threadsafe: true
-
-libraries:
-- name: django
-  version: "1.3"
+threadsafe: yes
 
 handlers:
-- url: /static
-  static_dir: static
-
 - url: /favicon\.ico
   static_files: favicon.ico
   upload: favicon\.ico
 
-builtins:
-- django_wsgi: on
+- url: /static
+  static_dir: static
+
+- url: .*
+  script: main.app
+
+libraries:
+- name: webapp2
+  version: "2.5.1"

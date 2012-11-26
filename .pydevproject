@@ -5,17 +5,14 @@
 <pydev_variables_property name="org.python.pydev.PROJECT_VARIABLE_SUBSTITUTION">
 <key>GOOGLE_APP_ENGINE</key>
 <value>C:\Program Files (x86)\Google\google_appengine</value>
-<key>DJANGO_MANAGE_LOCATION</key>
-<value>manage.py</value>
 </pydev_variables_property>
 <pydev_pathproperty name="org.python.pydev.PROJECT_SOURCE_PATH">
-<path>/hackathon</path>
+<path>/app-hackathon</path>
 </pydev_pathproperty>
 <pydev_pathproperty name="org.python.pydev.PROJECT_EXTERNAL_SOURCE_PATH">
 <path>${GOOGLE_APP_ENGINE}</path>
 <path>${GOOGLE_APP_ENGINE}/lib/PyAMF</path>
 <path>${GOOGLE_APP_ENGINE}/lib/antlr3</path>
-<path>${GOOGLE_APP_ENGINE}/lib/django_1_3</path>
 <path>${GOOGLE_APP_ENGINE}/lib/enum</path>
 <path>${GOOGLE_APP_ENGINE}/lib/fancy_urllib</path>
 <path>${GOOGLE_APP_ENGINE}/lib/google-api-python-client</path>
@@ -34,6 +31,7 @@
 <path>${GOOGLE_APP_ENGINE}/lib/webapp2</path>
 <path>${GOOGLE_APP_ENGINE}/lib/webob_1_1_1</path>
 <path>${GOOGLE_APP_ENGINE}/lib/yaml/lib</path>
+<path>${GOOGLE_APP_ENGINE}/lib/django_1_4</path>
 </pydev_pathproperty>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_VERSION">python 2.7</pydev_property>
 <pydev_property name="org.python.pydev.PYTHON_PROJECT_INTERPRETER">Default</pydev_property>
