@@ -14,20 +14,35 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 #
+"""Entry point for the app-hackathon software.
+
+Author: Dan Albert <dan@gingerhq.net>
+
+Defines application routes and controllers.
+"""
 import webapp2
 
 import os
 
 import auth
+import settings
 from models import Idea, Project
 
 from google.appengine.ext.webapp import template
 
 
 def render_template(name, data):
-    BASE_DIR = os.path.dirname(__file__)
-    TEMPLATE_DIR = 'templates'
-    path = os.path.join(BASE_DIR, TEMPLATE_DIR, "%s.html" % name)
+    """Renders a template by name.
+
+    Arguments:
+        name: the name of the template. this is the file name of the template
+              without the .html extension.
+
+        data: a dictionary containing data to be passed to the template.
+    """
+    path = os.path.join(settings.BASE_DIR, settings.TEMPLATE_DIR,
+                        "%s.html" % name)
+
     return template.render(path, data)
 
 
@@ -43,18 +58,7 @@ class ProjectsHandler(webapp2.RequestHandler):
 
         return self.response.out.write(render_template('projects', data))
 
-
-class ProjectsDeleteHandler(webapp2.RequestHandler):
-    def post(self, key):
-        if auth.user_is_admin():
-            Project.get(key).delete()
-            return self.redirect('/projects')
-        else:
-            return self.abort(401)
-    
-    
-class ProjectsVoteHandler(webapp2.RequestHandler):
-    def post(self, key):
+    def vote(self, key):
         if not auth.logged_in():
             return self.redirect('/projects')
         project = Project.get(key)
@@ -63,8 +67,15 @@ class ProjectsVoteHandler(webapp2.RequestHandler):
         else:
             project.vote(auth.current_user())
         return self.redirect('/projects')
-        
-        
+
+    def delete(self, key):
+        if auth.user_is_admin():
+            Project.get(key).delete()
+            return self.redirect('/projects')
+        else:
+            return self.abort(401)
+
+
 class IdeasHandler(webapp2.RequestHandler):
     def get(self):
         (login_text, login_url) = auth.login_logout(self.request)
@@ -76,7 +87,7 @@ class IdeasHandler(webapp2.RequestHandler):
         }
 
         return self.response.out.write(render_template('ideas', data))
-    
+
     def post(self):
         name = self.request.get('name')
         description = self.request.get('description')
@@ -85,9 +96,7 @@ class IdeasHandler(webapp2.RequestHandler):
             author=auth.current_user()).put()
         return self.redirect('/ideas')
 
-
-class IdeasApproveHandler(webapp2.RequestHandler):
-    def post(self, key):
+    def approve(self, key):
         if auth.user_is_admin():
             idea = Idea.get(key)
             Project(name=idea.name,
@@ -99,9 +108,7 @@ class IdeasApproveHandler(webapp2.RequestHandler):
         else:
             return self.abort(401)
 
-
-class IdeasDeleteHandler(webapp2.RequestHandler):
-    def post(self, key):
+    def delete(self, key):
         if auth.user_is_admin():
             Idea.get(key).delete()
             return self.redirect('/ideas')
@@ -150,11 +157,15 @@ class FAQHandler(webapp2.RequestHandler):
 app = webapp2.WSGIApplication([
     ('/', ProjectsHandler),
     ('/projects', ProjectsHandler),
-    ('/projects/delete/(.*)', ProjectsDeleteHandler),
-    ('/projects/vote/(.*)', ProjectsVoteHandler),
+    webapp2.Route(r'/projects/delete/<key>', name='projects_delete',
+                  handler=ProjectsHandler, handler_method='delete'),
+    webapp2.Route(r'/projects/vote/<key>', name='projects_vote',
+                  handler=ProjectsHandler, handler_method='vote'),
     ('/ideas', IdeasHandler),
-    ('/ideas/approve/(.*)', IdeasApproveHandler),
-    ('/ideas/delete/(.*)', IdeasDeleteHandler),
+    webapp2.Route(r'/ideas/approve/<key>', name='ideas_approve',
+                  handler=IdeasHandler, handler_method='approve'),
+    webapp2.Route(r'/ideas/delete/<key>', name='ideas_delete',
+                  handler=IdeasHandler, handler_method='delete'),
     ('/live', LiveHandler),
     ('/about', AboutHandler),
     ('/faq', FAQHandler),
