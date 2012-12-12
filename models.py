@@ -3,6 +3,7 @@
 Author: Dan Albert <dan@gingerhq.net>
 """
 from google.appengine.ext import db
+from google.appengine.api import users
 
 
 class Idea(db.Model):
@@ -27,28 +28,41 @@ class Project(db.Model):
     author = db.UserProperty("User that had the idea, or null if anonymous")
     description = db.TextProperty("Long description of the project")
     post_time = db.DateTimeProperty("Idea submission time", auto_now_add=True)
+    votes = db.ListProperty(users.User)
+    # implicit member "groups" from the Group model
 
     def has_voted(self, user):
-        """Returns true if the given suer has voted for this project."""
-        for vote in self.votes:
-            if vote.voter == user:
-                return True
-        return False
+        """Returns true if the given user has voted for this project."""
+        return user in self.votes
 
     def vote(self, user):
         """Adds the user's vote to this project."""
         if not self.has_voted(user):
-            Vote(project=self, voter=user).put()
+            self.votes.append(user)
+        # TODO: else should probably bitch and moan, but our error handling
+        #       isn't so great right now
 
     def remove_vote(self, user):
         """Removes the user's vote from this project."""
-        for vote in self.votes:
-            if vote.voter == user:
-                vote.delete()
-                return
+        self.votes.remove(user)
 
 
-class Vote(db.Model):
-    """Represents a single vote for a given idea."""
-    project = db.ReferenceProperty(Project, collection_name='votes')
-    voter = db.UserProperty()
+class Group(db.Model):
+    name = db.StringProperty("Name to identify the group")
+    public = db.BooleanProperty("True if anyone may join the group")
+    owner = db.UserProperty("The owner of this group")
+    project = db.ReferenceProperty(Project, collection_name='groups')
+    members = db.ListProperty(users.User)
+    pending_users = db.ListProperty(users.User)
+    
+    def __eq__(self, other):
+        # TODO: this may not be necessary. it is unclear whether keys are unique
+        #       throughout the datastore or just for each kind
+        return other.__class__ == self.__class__ and self.key() == other.key()
+    
+    def __ne__(self, other):
+        return not self.__eq__(other)
+
+    @classmethod
+    def exists(cls, name):
+        return Group.all().filter('name =', name).count()

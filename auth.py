@@ -7,6 +7,8 @@ introduce a different mechanism in the future.
 """
 from google.appengine.api import users
 
+from models import Group
+
 def current_user():
     """Returns the User object for the signed in user or None."""
     return users.get_current_user()
@@ -35,3 +37,32 @@ def login_logout(request):
         text = 'Login'
 
     return (text, url)
+
+def user_from_email(email):
+    return users.User(email=email)
+
+ 
+class User(object):
+    # TODO: really need to find a way to make this inherit from users.User.
+    #       might be doable by creating an inherited UserProperty for the models
+    def __init__(self, user):
+        self.gae_user = user
+
+    @property
+    def group(self):
+        """The group the user belongs to, or None."""
+        for group in Group.all():
+            if self.gae_user in group.members:
+                return group
+        return None
+    
+    def in_group(self):
+        """Returns True if the user is ina  group, else returns False."""
+        return self.group is not None
+    
+    def owns_a_group(self):
+        """Returns True if the user owns his/her group, else returns False."""
+        try:
+            return self.group.owner == self.gae_user
+        except AttributeError:
+            return False
