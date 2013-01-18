@@ -1,5 +1,5 @@
 html, body {
-  font-family: Verdana, Helvetica, sans-serif;
+  font-family:'century gothic',verdana,helvetica,sans-serif;
   background-color: #FFF;
   /*color:#356EC7;*/
   color:#404040;
@@ -11,13 +11,13 @@ html, body {
 .big-list-box{
 	float: left;
 	width: 355px;
-	height: 330px;
+	height: 310px;
 }
 .list-box {
 	float: left;
-	width: 355px;
-	height: 330px;
-	/*overflow:scroll;*/
+	width: 300px;
+	height: auto;
+	overflow:scroll;
 }
 #header{
 	width: 100%;
