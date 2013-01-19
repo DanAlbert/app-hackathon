@@ -213,10 +213,11 @@ class GroupsHandler(RequestHandler):
     
     def edit(self, key):
         group = Group.get(key)
-        if group.owner == auth.current_user():
+        if group.owner == auth.current_user() or auth.user_is_admin():
             self.render('groups_edit', { 'group': group })
         else:
             Messages.add('Only the owner of this group may edit it')
+	    return self.redirect('/groups/%s' % key)
     
     def delete(self, key):
         if auth.user_is_admin():
@@ -228,7 +229,7 @@ class GroupsHandler(RequestHandler):
     
     def update_group(self, key):
         group = Group.get(key)
-        if group.owner != auth.current_user():
+        if group.owner != auth.current_user() or auth.user_is_admin():
             Messages.add('Only the owner of the group owner may modify it')
             return self.redirect('/groups')
         
