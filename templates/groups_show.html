@@ -6,7 +6,7 @@
 <article class="i">
 	<p class="iTtl">{{ group.name }}</p>
 	<p class="iTtl">{{ group.project.name|default:"No project chosen" }}</p>
-	{% if admin or user.gae_user == group.owner %}
+	{% if admin or user == group.owner %}
 	<p class="iTtl">
 		<a href="/groups/{{ group.key }}/edit">Moderate this group</a>
 	</p>
@@ -16,7 +16,7 @@
 		<a href="/groups/{{ group.key }}/join">Join this group</a>
 	</p>
 	{% endif %}
-	{% if user.group == group and user.gae_user != group.owner %}
+	{% if user.group == group and user != group.owner %}
 	<p class="iTtl">
 		<a href="/groups/{{ group.key }}/leave">Leave this group</a>
 	</p>
