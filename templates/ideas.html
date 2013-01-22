@@ -3,7 +3,7 @@
 {% block title %}{{ block.super }} - Ideas{% endblock %}
 
 {% block content %} 
-<article class="i">
+<article class="i big-list-box">
 	<p class="iTtl">Post your idea for an app below!</p>
 	<br/>
 	<p class="iDes">
@@ -35,7 +35,7 @@
 </article>
 
 {% for idea in ideas %}
-	<article class="i">
+	<article class="i list-box">
 	<p class="iTtl">
 		{% if idea.author.nickname %}
 		{{ idea.author }}
