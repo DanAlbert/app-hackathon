@@ -39,10 +39,10 @@
 				{% for pending in group.pending_users %}
 				<tr>
 					<td>{{ pending.nickname }}</td>
-					<td><input type="radio" name="approve"
-					           value="{{ pending }}" /></td>
-					<td><input type="radio" name="refuse"
-					           value="{{ pending }}" /></td>
+					<td><input type="radio" name="approve-{{pending}}"
+					           value="approve" /></td>
+					<td><input type="radio" name="approve-{{pending}}"
+					           value="refuse" /></td>
 				</tr>
 				{% endfor %}
 			</tbody>

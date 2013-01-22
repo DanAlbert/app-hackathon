@@ -48,6 +48,18 @@ class User(object):
     def __init__(self, user):
         self.gae_user = user
 
+    def __eq__(self, other):
+        if type(other) is users.User:
+            return self.user_id == other.user_id()
+        elif type(other) is User:
+            return self.user_id == other.user_id
+        else:
+            return self == other
+    
+    @property
+    def user_id(self):
+        return self.gae_user.user_id()
+    
     @property
     def group(self):
         """The group the user belongs to, or None."""
@@ -57,8 +69,16 @@ class User(object):
         return None
     
     def in_group(self):
-        """Returns True if the user is ina  group, else returns False."""
+        """Returns True if the user is in a group, else returns False."""
         return self.group is not None
+    
+    def pending_join(self):
+        """Returns True if the user is pending approval to join a group."""
+        for group in Group.all():
+            for user in group.pending_users:
+                if user.user_id() == self.user_id:
+                    return True
+        return False
     
     def owns_a_group(self):
         """Returns True if the user owns his/her group, else returns False."""

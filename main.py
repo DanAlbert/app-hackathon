@@ -72,7 +72,7 @@ class ProjectsHandler(RequestHandler):
     def claim(self, key):
         user = auth.User(auth.current_user())
         group = user.group
-        if group.owner == auth.current_user():
+        if group.owner.user_id() == auth.current_user().user_id():
             project = Project.get(key)
             group.project = project
             group.put()
@@ -155,13 +155,16 @@ class GroupsHandler(RequestHandler):
         user = auth.User(auth.current_user())
         if user.in_group():
             Messages.add('You are already in a group')
-            return self.redirect('/groups')
+            return self.redirect('/groups/%s' % key)
+        if user.pending_join():
+            Messages.add('You have already applied to join a group')
+            return self.redirect('/groups/%s' % key)
         if group.public:
-            Messages.add('You have joined the group')
             group.members.append(auth.current_user())
+            Messages.add('You have joined the group')
         else:
-            Messages.add('You have requested to join the group')
             group.pending_users.append(auth.current_user())
+            Messages.add('You have requested to join the group')
         group.put()
         return self.redirect('/groups/%s' % key)
     
@@ -212,11 +215,16 @@ class GroupsHandler(RequestHandler):
             return self.redirect('/groups/signup')
     
     def edit(self, key):
+        if not auth.logged_in():
+            return self.redirect('/groups')
+        
+        user = auth.current_user()
         group = Group.get(key)
-        if group.owner == auth.current_user():
-            self.render('groups_edit', { 'group': group })
+        if group.owner.user_id() == user.user_id() or auth.user_is_admin():
+            return self.render('groups_edit', { 'group': group })
         else:
             Messages.add('Only the owner of this group may edit it')
+            return self.redirect('/groups/%s' % key)
     
     def delete(self, key):
         if auth.user_is_admin():
@@ -227,16 +235,18 @@ class GroupsHandler(RequestHandler):
         return self.redirect('/groups')
     
     def update_group(self, key):
+        if not auth.logged_in():
+            return self.redirect('/groups')
+        
+        user = auth.current_user()
         group = Group.get(key)
-        if group.owner != auth.current_user():
+        if group.owner.user_id() != user.user_id() and not auth.user_is_admin():
             Messages.add('Only the owner of the group owner may modify it')
             return self.redirect('/groups')
         
         name = self.request.get('name')
         public = self.request.get('public') == 'public'
         abandon = self.request.get('abandon-project')
-        approve = self.request.get_all('approve')
-        refuse = self.request.get_all('refuse')
         remove = self.request.get_all('remove')
         owner = self.request.get('owner')
         delete = self.request.get('delete')
@@ -251,13 +261,14 @@ class GroupsHandler(RequestHandler):
         if abandon:
             group.project = None
         
-        for user in approve:
-            u = auth.user_from_email(user)
-            group.members.append(u)
-            group.pending_users.remove(u)
-        
-        for user in refuse:
-            group.pending_users.remove(auth.user_from_email(user))
+        pending  = list(group.pending_users)
+        for user in pending:
+            approve = self.request.get("approve-%s" % user)
+            if approve == "approve":
+                group.members.append(user)
+                group.pending_users.remove(user)
+            elif approve == "refuse":
+                group.pending_users.remove(user)
         
         group.owner = auth.user_from_email(owner)
         
