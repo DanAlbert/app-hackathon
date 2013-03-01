@@ -28,7 +28,7 @@ import auth
 import settings
 
 from messages import Messages 
-from models import Group, Idea, Project
+from models import Group, Idea, Project, Submission
 
 from google.appengine.ext.webapp import template
 
@@ -247,6 +247,9 @@ class GroupsHandler(RequestHandler):
         name = self.request.get('name')
         public = self.request.get('public') == 'public'
         abandon = self.request.get('abandon-project')
+        sub_text = self.request.get('submission-text')
+        sub_url = self.request.get('submission-url')
+        remove_submission = self.request.get_all('remove-submission')
         remove = self.request.get_all('remove')
         owner = self.request.get('owner')
         delete = self.request.get('delete')
@@ -261,6 +264,12 @@ class GroupsHandler(RequestHandler):
         if abandon:
             group.project = None
         
+        if sub_text and sub_url:
+            Submission(text=sub_text, url=sub_url, group=group).put()
+
+        for sub in Submission.get(remove_submission):
+            sub.delete()
+
         pending  = list(group.pending_users)
         for user in pending:
             approve = self.request.get("approve-%s" % user)

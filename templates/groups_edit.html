@@ -25,6 +25,35 @@
 			<p>Claim a project <a href="/projects">here</a></p>
 			{% endif %}
 		</p>
+		<label for="submission-text">Link Text:</label>
+		<input type="text" name="submission-text" id="submission-text" /><br />
+		<label for="submission-url">Link URL:</label>
+		<input type="text" name="submission-url" id="submission-url" /><br />
+		{% if group.submissions.get %}
+		<p>Submissions:</p>
+		<table>
+			<thead>
+				<tr>
+					<th>Submission</th>
+					<th>Remove</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for submission in group.submissions %}
+				<tr>
+					<td>
+						<a href="{{ submission.url }}">{{ submission.text }}</a>
+					</td>
+					<td>
+						<input type="checkbox" name="remove-submission"
+						       value="{{ submission.key }}" />
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+		</ul>
+		{% endif %}
 		{% if group.pending_users %}
 		<p>Awaiting join approval:</p>
 		<table>

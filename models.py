@@ -54,6 +54,7 @@ class Group(db.Model):
     project = db.ReferenceProperty(Project, collection_name='groups')
     members = db.ListProperty(users.User)
     pending_users = db.ListProperty(users.User)
+    # implicit member "submissions" from the submission model
     
     def __eq__(self, other):
         # TODO: this may not be necessary. it is unclear whether keys are unique
@@ -66,3 +67,13 @@ class Group(db.Model):
     @classmethod
     def exists(cls, name):
         return Group.all().filter('name =', name).count()
+
+
+class Submission(db.Model):
+    text = db.StringProperty("Link text")
+    url = db.LinkProperty("Link to submission")
+    weight = db.IntegerProperty("Display order weight", default=0)
+    group = db.ReferenceProperty(Group, collection_name='submissions')
+
+    def to_a(self):
+        return '<a href="%s">%s</a>' % (self.url, self.text)

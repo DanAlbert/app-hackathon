@@ -21,7 +21,15 @@
 		<a href="/groups/{{ group.key }}/leave">Leave this group</a>
 	</p>
 	{% endif %}
-	<br/>
+	{% if group.submissions.get %}
+	<h3>Submissions</h3>
+		<ul>
+			{% for submission in group.submissions %}
+			<li><a href="{{ submission.url }}">{{ submission.text}}</a></li>
+			{% endfor %}
+		</ul>
+	{% endif %}
+	<h3>Group Members</h3>
 	<ul>
 		{% for member in group.members %}
 		<li>{{ member.nickname }}</li>
