@@ -10,8 +10,7 @@ class Messages:
     Messages can be added at any time, and retrieving messages clears the list.
     This ensures that messages will only be displayed once.
     """
-    def __init__(self):
-        self.messages = []
+    self.messages = []
 
     @classmethod
     def add(cls, msg):
