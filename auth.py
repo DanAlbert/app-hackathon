@@ -9,17 +9,21 @@ from google.appengine.api import users
 
 from models import Group
 
+
 def current_user():
     """Returns the User object for the signed in user or None."""
     return users.get_current_user()
+
 
 def user_is_admin():
     """Returns True if the current user is an administrator."""
     return users.is_current_user_admin()
 
+
 def logged_in():
     """Returns true if a user is currently logged in."""
     return current_user() is not None
+
 
 def login_logout(request):
     """Generates text and a URL for a login/logout link.
@@ -38,13 +42,20 @@ def login_logout(request):
 
     return (text, url)
 
+
 def user_from_email(email):
+    """Returns the GAE user object associated with a given email address."""
     return users.User(email=email)
 
- 
+
 class User(object):
-    # TODO: really need to find a way to make this inherit from users.User.
-    #       might be doable by creating an inherited UserProperty for the models
+    """A wrapper for the GAE User class.
+
+    TODO: We needed to add some custom methods to the GAE User class, and this
+          was the simplest way to do that. Extending the User class would be
+          cleaner, but that will require writing a custom datastore property
+          type. Going forward, this should be done, but this works for now.
+    """
     def __init__(self, user):
         self.gae_user = user
 
@@ -55,11 +66,12 @@ class User(object):
             return self.user_id == other.user_id
         else:
             return self == other
-    
+
     @property
     def user_id(self):
+        """Returns the user ID for the user."""
         return self.gae_user.user_id()
-    
+
     @property
     def group(self):
         """The group the user belongs to, or None."""
@@ -67,11 +79,11 @@ class User(object):
             if self.gae_user in group.members:
                 return group
         return None
-    
+
     def in_group(self):
         """Returns True if the user is in a group, else returns False."""
         return self.group is not None
-    
+
     def pending_join(self):
         """Returns True if the user is pending approval to join a group."""
         for group in Group.all():
@@ -79,7 +91,7 @@ class User(object):
                 if user.user_id() == self.user_id:
                     return True
         return False
-    
+
     def owns_a_group(self):
         """Returns True if the user owns his/her group, else returns False."""
         try:

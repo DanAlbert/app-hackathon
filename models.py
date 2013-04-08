@@ -48,6 +48,7 @@ class Project(db.Model):
 
 
 class Group(db.Model):
+    """A group of people that are working together on a project."""
     name = db.StringProperty("Name to identify the group")
     public = db.BooleanProperty("True if anyone may join the group")
     owner = db.UserProperty("The owner of this group")
@@ -55,25 +56,32 @@ class Group(db.Model):
     members = db.ListProperty(users.User)
     pending_users = db.ListProperty(users.User)
     # implicit member "submissions" from the submission model
-    
+
     def __eq__(self, other):
-        # TODO: this may not be necessary. it is unclear whether keys are unique
-        #       throughout the datastore or just for each kind
+        # TODO: this may not be necessary. it is unclear whether keys are
+        #       unique throughout the datastore or just for each kind
         return other.__class__ == self.__class__ and self.key() == other.key()
-    
+
     def __ne__(self, other):
         return not self.__eq__(other)
 
     @classmethod
     def exists(cls, name):
-        return Group.all().filter('name =', name).count()
+        """Returns True if a group by the given name already exists."""
+        return Group.all().filter('name =', name).count() > 0
 
 
 class Submission(db.Model):
+    """A group's submission for their project.
+
+    Submissions are hosted externally, and groups are allowed to post links to
+    their submissions to our site.
+    """
     text = db.StringProperty("Link text")
     url = db.LinkProperty("Link to submission")
     weight = db.IntegerProperty("Display order weight", default=0)
     group = db.ReferenceProperty(Group, collection_name='submissions')
 
     def to_a(self):
+        """Returns the HTML anchor tag that represents this submission."""
         return '<a href="%s">%s</a>' % (self.url, self.text)
