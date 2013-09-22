@@ -40,11 +40,6 @@ Guidelines and Style
 * Try to keep your lines limited to 80 characters. I'm often working from a
   terminal, and lines reaching into the hundreds of characters in length are
   very unwieldy.
-* Avoid using memcaches. Premature optimization only makes development more
-  difficult. If we see some parts of the site that would benefit from their use,
-  file a bug and I'll take care of it.
-* Let me (Dan) know before you make a database change. It's usually simpler to
-  write it myself than it is to fix a bad implementation.
 * Make sure your resources are in the right place. HTML templates go in
   `/templates`. Stylesheets, images and scripts go in `/static`.
 * [Python style guide](http://www.python.org/dev/peps/pep-0008/)
